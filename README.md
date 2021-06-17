@@ -7,7 +7,7 @@
    - [Example usage](#usage)
 4. [Reference](#reference)
 
-# <a name='introduction'></a> Arizona-spotting
+# <a name='introduction'></a> Arizona-asr
 
 Arizona-asr is a library provide Transformer architectures for Automatic speech recognition problem.
 
@@ -15,9 +15,9 @@ We provide two main SoTA architectures:
 
 1. Conformer [[1]](#conformer)
 
-2. Wav2vec 2.0 [2]
+2. Wav2vec 2.0 [[2]](#wav2vec2.0)
 
-# <a name='how_to_use'></a> How to use Arizona-spotting
+# <a name='how_to_use'></a> How to use Arizona-asr
 
 ## Installation <a name='installation'></a>
 
@@ -66,9 +66,9 @@ data
 
 # <a name='reference'></a> Reference
 
-[<a name='conformer'></a> [1] Anmol Gulati, James Qin, Chung-Cheng Chiu, Niki Parmar, Yu Zhang, Jiahui Yu, Wei Han, Shibo Wang, Zhengdong Zhang, Yonghui Wu and Ruoming Pang: “[Conformer: Convolution-augmented Transformer for Speech Recognition](https://arxiv.org/abs/2005.08100)”, in arXiv:2005.08100, 2020.
+<a name='conformer'></a> [1] Anmol Gulati, James Qin, Chung-Cheng Chiu, Niki Parmar, Yu Zhang, Jiahui Yu, Wei Han, Shibo Wang, Zhengdong Zhang, Yonghui Wu and Ruoming Pang: “[Conformer: Convolution-augmented Transformer for Speech Recognition](https://arxiv.org/abs/2005.08100)”, in arXiv:2005.08100, 2020.
 
-[2] Alexei Baevski, Henry Zhou, Abdelrahman Mohamed and Michael Auli: “[wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations](https://arxiv.org/pdf/2006.11477.pdf)”, in arXiv:2006.11477, 2020.
+<a name='wav2vec2.0'></a> [2] Alexei Baevski, Henry Zhou, Abdelrahman Mohamed and Michael Auli: “[wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations](https://arxiv.org/pdf/2006.11477.pdf)”, in arXiv:2006.11477, 2020.
 
 # License
 
