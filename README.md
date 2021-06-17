@@ -15,9 +15,9 @@ We provide two main SoTA architectures:
 
 1. Conformer [[1]](#conformer)
 
-<img src="./docs/imgs/architecture1.png" alt="drawing" width="500"/>
+<img src="./docs/imgs/architectur.png" alt="drawing" width="500"/>
 
-2. Wav2vec 2.0 [[2]](#wav2vec2.0)]
+2. Wav2vec 2.0 [[2]](#wav2vec2.0)
 
 <img src="./docs/imgs/architecture2.png" alt="drawing" width="500"/>
 
