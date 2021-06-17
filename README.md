@@ -15,7 +15,10 @@ We provide two main SoTA architectures:
 
 1. Conformer [[1]](#conformer)
 
-2. Wav2vec 2.0 [[2]](#wav2vec2.0)
+<img src="./docs/imgs/architecture.png" alt="drawing" width="500"/>
+
+2. Wav2vec 2.0 [[2]](#wav2vec2.0)]
+
 
 # <a name='how_to_use'></a> How to use Arizona-asr
 
