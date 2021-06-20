@@ -101,6 +101,5 @@ data
   
 # Author
 
-Arizona-asr was developed by Phuc Phan © Copyright 2021.
-
-For any questions or comments, please contact the following email: phanxuanphucnd@gmail.com
+- Name: Phan Xuan Phuc
+- Email: phanxuanphucnd@gmail.com
