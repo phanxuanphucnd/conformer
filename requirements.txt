@@ -3,3 +3,6 @@ tqdm
 scikit-learn
 librosa~=0.7.2
 # progressbar
+astropy
+torchaudio
+omegaconf
