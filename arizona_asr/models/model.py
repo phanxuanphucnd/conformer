@@ -157,3 +157,118 @@ class TransducerModel(BaseModel):
         outputs = torch.stack(outputs, dim=1).transpose(0, 1)
 
         return outputs
+
+class EncoderDecoderModel(BaseModel):
+    """ Super class of KoSpeech's Encoder-Decoder Models """
+    def __init__(self, encoder: BaseEncoder, decoder: BaseDecoder) -> None:
+        super(EncoderDecoderModel, self).__init__()
+        self.encoder = encoder
+        self.decoder = decoder
+
+    def set_encoder(self, encoder):
+        """ Setter for encoder """
+        self.encoder = encoder
+
+    def set_decoder(self, decoder):
+        """ Setter for decoder """
+        self.decoder = decoder
+
+    def count_parameters(self) -> int:
+        """ Count parameters of encoder """
+        num_encoder_parameters = self.encoder.count_parameters()
+        num_decoder_parameters = self.decoder.count_parameters()
+        return num_encoder_parameters + num_decoder_parameters
+
+    def update_dropout(self, dropout_p) -> None:
+        """ Update dropout probability of model """
+        self.encoder.update_dropout(dropout_p)
+        self.decoder.update_dropout(dropout_p)
+
+    def forward(
+            self,
+            inputs: Tensor,
+            input_lengths: Tensor,
+            targets: Tensor,
+            *args,
+    ) -> Tuple[Tensor, Tensor, Tensor]:
+        """
+        Forward propagate a `inputs` and `targets` pair for training.
+        Args:
+            inputs (torch.FloatTensor): A input sequence passed to encoder. Typically for inputs this will be a padded
+                `FloatTensor` of size ``(batch, seq_length, dimension)``.
+            input_lengths (torch.LongTensor): The length of input tensor. ``(batch)``
+            targets (torch.LongTensr): A target sequence passed to decoder. `IntTensor` of size ``(batch, seq_length)``
+        Returns:
+            (Tensor, Tensor, Tensor)
+            * predicted_log_probs (torch.FloatTensor): Log probability of model predictions.
+            * encoder_output_lengths: The length of encoder outputs. ``(batch)``
+            * encoder_log_probs: Log probability of encoder outputs will be passed to CTC Loss.
+                If joint_ctc_attention is False, return None.
+        """
+        raise NotImplementedError
+
+    @torch.no_grad()
+    def recognize(self, inputs: Tensor, input_lengths: Tensor) -> Tensor:
+        """
+        Recognize input speech. This method consists of the forward of the encoder and the decode() of the decoder.
+        Args:
+            inputs (torch.FloatTensor): A input sequence passed to encoder. Typically for inputs this will be a padded
+                `FloatTensor` of size ``(batch, seq_length, dimension)``.
+            input_lengths (torch.LongTensor): The length of input tensor. ``(batch)``
+        Returns:
+            * predictions (torch.FloatTensor): Result of model predictions.
+        """
+        encoder_outputs, encoder_output_lengths, _ = self.encoder(inputs, input_lengths)
+        return self.decoder.decode(encoder_outputs, encoder_output_lengths)
+
+class EncoderModel(BaseModel):
+    """ Super class of KoSpeech's Encoder only Models """
+    def __init__(self):
+        super(EncoderModel, self).__init__()
+        self.decoder = None
+
+    def set_decoder(self, decoder):
+        """ Setter for decoder """
+        self.decoder = decoder
+
+    def forward(self, inputs: Tensor, input_lengths: Tensor) -> Tuple[Tensor, Tensor]:
+        """
+        Forward propagate a `inputs` for  ctc training.
+        Args:
+            inputs (torch.FloatTensor): A input sequence passed to encoder. Typically for inputs this will be a padded
+                `FloatTensor` of size ``(batch, seq_length, dimension)``.
+            input_lengths (torch.LongTensor): The length of input tensor. ``(batch)``
+        Returns:
+            (Tensor, Tensor):
+            * predicted_log_prob (torch.FloatTensor)s: Log probability of model predictions.
+            * output_lengths (torch.LongTensor): The length of output tensor ``(batch)``
+        """
+        raise NotImplementedError
+
+    @torch.no_grad()
+    def decode(self, predicted_log_probs: Tensor) -> Tensor:
+        """
+        Decode encoder_outputs.
+        Args:
+            predicted_log_probs (torch.FloatTensor):Log probability of model predictions. `FloatTensor` of size
+                ``(batch, seq_length, dimension)``
+        Returns:
+            * predictions (torch.FloatTensor): Result of model predictions.
+        """
+        return predicted_log_probs.max(-1)[1]
+
+    @torch.no_grad()
+    def recognize(self, inputs: Tensor, input_lengths: Tensor) -> Tensor:
+        """
+        Recognize input speech.
+        Args:
+            inputs (torch.FloatTensor): A input sequence passed to encoder. Typically for inputs this will be a padded
+                `FloatTensor` of size ``(batch, seq_length, dimension)``.
+            input_lengths (torch.LongTensor): The length of input tensor. ``(batch)``
+        Returns:
+            * predictions (torch.FloatTensor): Result of model predictions.
+        """
+        predicted_log_probs, _ = self.forward(inputs, input_lengths)
+        if self.decoder is not None:
+            return self.decoder.decode(predicted_log_probs)
+        return self.decode(predicted_log_probs)

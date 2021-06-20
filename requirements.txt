@@ -7,3 +7,4 @@ astropy
 torchaudio
 omegaconf
 Levenshtein
+pandas
