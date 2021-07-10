@@ -7,7 +7,7 @@
    - [Example usage](#usage)
 4. [Reference](#reference)
 
-# <a name='introduction'></a> Arizona-asr
+# <a name='introduction'></a> Conformer
 
 A implementation of Conformer architecture for Automatic speech recognition problem.
 
